@@ -40,6 +40,7 @@ void draw()
   
   background(0);
  
+ //Draw grid of boxes
   for (int c =0; c<cols; c++)
   {
     pushMatrix();
@@ -47,14 +48,15 @@ void draw()
     for (int r=0; r<rows; r++)
     {
       pushMatrix();
-      int x =0;
+      int offset =0;
+      //offset every other row 30 pixels to the right 
       if (r%2==0)
       {
-        translate(30, 0);
-        x = 30;
+        offset = 30;
+        translate(offset, 0);
     }
       translate(0, r*30);
-      drawBox(r*30, 60* c + x);
+      drawBox(r*30, 60* c + offset);
       popMatrix();
     }
     popMatrix();
@@ -64,6 +66,7 @@ void draw()
 void drawBox(int y, int x)
 {
   
+  //Calculate X and Y movement amounts based on sinusoidal waveforms from Ani library 
   float moveAmountY;
   float moveAmountX;
   float moveAmount;
@@ -80,16 +83,13 @@ void drawBox(int y, int x)
   if(invDistanceX > 1)invDistanceX = 1;
   moveAmountX = (1-invDistanceX);
   
-  //Final move amount
+  //Final movement amoutn is the distance between the X and Y movement amounts
   moveAmount = maxMoveAmount * abs(moveAmountY - moveAmountX);
   
+  //Change line color based on movement amount
   stroke(moveAmount/70+.1, 1, 1);
-    
-  /*  
-  if(row == int(((float)mouseY/height)*rows) && col == int(((float)mouseX/width)*cols))
-  println("row = " + row + ", col = " + col + ", moveAmt = " + moveAmount);
-  */
   
+  //Draw lines
   pushMatrix();
   translate(0, moveAmount);
   line(-lineWidth/2, lineWidth/2, lineWidth/2, lineWidth/2);
